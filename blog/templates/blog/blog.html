@@ -1,0 +1,172 @@
+{% extends 'pages/base.html' %}
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<style>
+    .addnewproject {
+        margin-right: 140px;
+        margin-bottom: 10px;
+    }
+
+    input {
+        margin-right: 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        border: 1px solid #dee2e6;
+    }
+
+    th {
+        height: 40px;
+        text-align: left;
+    }
+
+    table.dataTable thead th,
+    table.dataTable thead td {
+        border-bottom: 1px solid #ccc;
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #ccc;
+    }
+
+    button.btn {
+        color: #fff;
+    }
+</style>
+{% if user.username %}
+<div class="addnewproject">
+    <button onclick="post_create('{% url 'post_create'%}')" type="button" class="btn btn-primary" data-toggle="modal" 
+    data-target="#postAdd">Add Post</button>
+</div>
+
+<table id="bootstrapdatatable" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name post</th>
+            <th>Image</th>
+            <th>Content</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in Posts %}
+        <tr id="{{ post.id }}">
+            <td>{{ post.id }}</td>
+            <td><a href="{% url 'detail' post.id %}">{{ post.title }}</a></td>
+            <td><img src="{{post.image.url}}" width="100px" height="50px" /></td>
+            <td>{{ post.body|safe|linebreaks }}</td>
+            <td class="action">
+                <button onclick="post_edit('{% url 'post_update' post.id %}')" type="submit" class="btn btn-secondary"
+                    style="background: deepskyblue; padding: 5px;" data-toggle="modal"
+                    data-target="#postEdit">Edit</button>
+                <button onclick="post_delete('{% url 'post_delete' post.id %}')" type="button" class="btn btn-secondary" style="background: red;padding: 5px;"
+                    data-toggle="modal" data-target="#postDelete">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% comment %} popup create {% endcomment %}
+<div class="modal fade" id="postAdd" tabindex="-1" role="dialog" aria-labelledby="postAdd" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} popup update {% endcomment %}
+<div class="modal fade" id="postEdit" tabindex="-1" role="dialog" aria-labelledby="postEdit" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% comment %} popup delete {% endcomment %}
+<div class="modal fade" id="postDelete" tabindex="-1" role="dialog" aria-labelledby="postDelete" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    $(document).ready(function () {
+            $('#bootstrapdatatable').DataTable({
+                "aLengthMenu": [[3, 5, 10, 25, -1], [3, 5, 10, 25, "All"]],
+                "iDisplayLength": 3
+            }
+            );
+    });
+    $(function() {
+        $("#places").autocomplete({
+        source: "/blog/get_places/",
+        select: function (event, ui) { //item selected
+            AutoCompleteSelectHandler(event, ui)
+        },
+        minLength: 2,
+        });
+    });
+
+    function AutoCompleteSelectHandler(event, ui)
+    {
+        var selectedObj = ui.item;
+    }
+    var $ = jQuery.noConflict()
+    function post_edit(url) {
+        $('#postEdit').load(url, function () {
+            $(this).modal('show')
+        })
+    }
+    function post_create(url) {
+        $('#postAdd').load(url, function () {
+            $(this).modal('show')
+        })
+    }
+    function post_delete(url) {
+        $('#postDelete').load(url, function () {
+            $(this).modal('show')
+        })
+    }
+
+</script>
+
+<br />
+{% if page_obj.has_next %}
+<a href="{{ request.path }}?page={{page_obj.next_page_number}}">Tiếp theo</a>
+{% else %}
+<a href="{{ request.path }}?page={{page_obj.back_page_number}}">Quay lại</a>
+{% endif %}
+{% else %}
+<p style="color:red;">Vui lòng đăng nhập!</p>
+{% endif %}
+
+{% endblock %}

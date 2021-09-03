@@ -1,0 +1,114 @@
+==============================================
+========= Tạo button tại HTML ================
+==============================================
+​
+<button class="btn btn-light btn-sm border" data-toggle="modal" data-target="#webinarSurveyFileSubmit">提出する</button>
+​
+==============================================
+=============== Body modal ===================
+==============================================
+- Copy phần này vào Html, lưu ý thay đổi "id", "aria-labelledby" ở modal cho đúng với "data-target" ở button
+- Đổi tên "modalWebinarSurveyFileSubmit" tại "modal-body" để không trùng id với các popup khác
+​
+<div class="modal fade" id="webinarSurveyFileSubmit" tabindex="-1" role="dialog" aria-labelledby="webinarSurveyFileSubmit" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">ウェビナー開催依頼</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div id="modalWebinarSurveyFileSubmit" data-siteid="-1" class="modal-body" style="min-height: 200px">
+​
+      </div>
+      <div class="container p-0">
+        <div class="col-12" id="message">
+​
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="webinar_survey_property();" class="btn btn-sm btn-primary" type="button">
+        <i class="fa fa-save"></i> Save</button>
+        <button class="btn btn-sm btn-secondary" type="button" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+​
+​
+=====> Ra ngoài test lại thử đã lên được popup chưa.
+​
+=====================================================
+============ Xử lý show popup lên =================== 
+=====================================================
+​
+<script>
+  $('#webinarSurveyFileSubmit').on('shown.bs.modal', function (e) {
+    disable_element($('#modalWebinarSurveyFileSubmit'));
+​
+    $.ajax({
+      type: "POST",
+      url: "/task-request-management/ajax-get-form-webinar-survey-property",
+      dataType: "html",
+      data: { 
+        site_name: 'Microsoft',
+        'csrfmiddlewaretoken': '{{ csrf_token }}' 
+      },
+ 
+      success: function (response) {
+​
+      },
+      error: function (xhr, status, e) {
+      },
+​
+    });
+​
+  });
+</script>
+​
+Mô tả:
+- Đặt script này trong block script 
+- Lưu ý: $('#webinarSurveyFileSubmit') --> trùng với id của button
+- disable_element($('#modalWebinarSurveyFileSubmit'));  --> cho hiển thị loading khi mới vào load dữ liệu
+- url: tự tạo trong urls.py 
+	Ví dụ:  url(r'^ajax-get-form-webinar-survey-property$', views.ajax_get_form_webinar_property, name='ajax_get_form_webinar_property')
+​
+=============================================================
+==== Bắn dữ liệu lên backend và trả dữ liệu về frontent =====
+=============================================================
+- Copy function này vào views.py
+​
+def ajax_get_form_webinar_property(request):
+  if request.method == 'POST' and request.is_ajax():
+    #1) Lấy dữ liệu
+    param_site_name = request.POST["site_name"]
+    print(param_site_name)
+    
+    #3) dữ liệu trả về  
+    data = {
+      'site_name' : param_site_name
+    }
+    tmp_file_path = 'apps/f_5_1_task_request_management/go_to_webinar/partner/popup/webinar_survey_file_submit.html'
+​
+    return render(request, tmp_file_path, data)
+​
+- Lưu ý : "site_name" trong request.POST["site_name"] là dữ liệu đã lấy được từ ajax frontend bắn lên.
+- Tự tạo file 'apps/f_5_1_task_request_management/go_to_webinar/partner/popup/webinar_survey_file_submit.html' để tạo trang html và render dữ liệu vào đó
+​
+==============================================================
+================ Đổ form ra ngoài frontend ===================
+==============================================================
+- Thêm 2 dòng này vào funtion "success" ở ajax để show dữ liệu lên
+- enable_element: thêm này vào để bỏ disable các button. -> lưu ý phải cho dòng này vào
+​
+$('#modalWebinarSurveyFileSubmit').html(response);
+enable_element($('#modalWebinarSurveyFileSubmit'))
+​
+=============================================================
+========== Tự code html hoàn thiện trang popup ==============
+================== THE END ==================================
+=============================================================
+​
+- Tham khảo thêm Modal của bootstrap để custom popup
+Link: https://getbootstrap.com/docs/4.3/components/modal/

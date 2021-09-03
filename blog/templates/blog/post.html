@@ -1,0 +1,14 @@
+{% extends 'pages/base.html' %}
+{% block title %}{{object.title}}{% endblock %}
+
+{% block content %}
+<select>
+    {% for post in post_list %}
+    <option value="{{post.id}}">{{post.title}}</option>
+    {% endfor %}
+</select>
+<h4><a href="{% url 'detail' object.id %}">{{ object.title }}</a></h4>
+<h5>on {{ object.date }}</h5>
+<img src="{{post.image.url}}" width="500px" height="300px" />
+{{object.body|safe|linebreaks}}
+{% endblock %}

@@ -1,0 +1,42 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+amqp = "==5.0.6"
+asgiref = "==3.4.1"
+"backports.entry-points-selectable" = "==1.1.0"
+billiard = "==3.6.4.0"
+cached-property = "==1.5.2"
+celery = "==5.1.2"
+certifi = "==2021.5.30"
+click = "==7.1.2"
+click-didyoumean = "==0.0.3"
+click-plugins = "==1.1.1"
+click-repl = "==0.2.0"
+distlib = "==0.3.2"
+django-filter = "==2.4.0"
+filelock = "==3.0.12"
+importlib-metadata = "==4.6.4"
+kombu = "==5.1.0"
+numpy = "==1.19.3"
+pipenv = "==2021.5.29"
+platformdirs = "==2.2.0"
+prompt-toolkit = "==3.0.20"
+pytz = "==2021.1"
+six = "==1.16.0"
+sqlparse = "==0.4.1"
+typing-extensions = "==3.10.0.0"
+vine = "==5.0.0"
+virtualenv = "==20.7.2"
+virtualenv-clone = "==0.5.6"
+wcwidth = "==0.2.5"
+zipp = "==3.5.0"
+Django = "==3.2.6"
+Pillow = "==8.3.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

@@ -1,0 +1,10 @@
+{% extends 'pages/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.username %}
+    <p>Email: {{ user.username }}</p>
+{% else %}
+<p style="color:red;">Vui lòng đăng nhập!</p>
+{% endif %}
+{% endblock %}

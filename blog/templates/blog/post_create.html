@@ -1,0 +1,56 @@
+<style>
+    h4, label {
+        color: blue;
+    }
+</style>
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Create Post</h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div data-siteid="-1" class="modal-body" style="min-height: 200px">
+            <form action="{% url 'post_create' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {% if error_message %}
+                            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                            {% endif %}
+
+                            <div class="form-group clearfix">
+                                <label style="margin-left:-25px;" class="col-md-4 control-label text-right">Title<span
+                                        class="text-red">*</span>:</label>
+                                <div class="col-md-6">
+                                    {{form.title }}
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class="col-md-4 control-label text-right">Content<span
+                                        class="text-red">*</span>:</label>
+                                <div class="col-md-6">
+                                    {{form.body }}
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class="col-md-4 control-label text-right">Images<span
+                                        class="text-red">*</span>:</label>
+                                <div class="col-md-6">
+                                    {{form.image}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" type="submit">
+                        <i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-sm btn-secondary" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 style="color:blue;" class="modal-title">Delete Post {{ object }}</h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div data-siteid="-1" class="modal-body">
+            <form action="{% url 'post_delete' post.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>Are you sure you want to delete "{{ object }}"?</p>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" type="submit">
+                        <i class="fa fa-save"></i>Delete</button>
+                    <button class="btn btn-sm btn-secondary" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

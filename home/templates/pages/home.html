@@ -1,0 +1,11 @@
+{% extends 'pages/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.username %}
+    <p>Tên: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+{% else %}
+<p style="color:red;" >Vui lòng đăng nhập!</p>
+{% endif %}
+{% endblock %}

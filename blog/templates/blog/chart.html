@@ -1,0 +1,10 @@
+{% extends 'pages/base.html' %}
+{% block title %}Chart{% endblock %}
+
+{% block content %}
+{% if user.username %}
+    <canvas id="myChart" width="400" height="200"></canvas>
+{% else %}
+    <p style="color:red;">Vui lòng đăng nhập!</p>
+{% endif %}
+{% endblock %} 
